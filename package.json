@@ -1,0 +1,81 @@
+{
+  "name": "xcloudwrapper",
+  "productName": "XCloud Player",
+  "version": "1.0.0",
+  "description": "A native-feeling macOS desktop wrapper for Xbox Cloud Gaming (xbox.com/play), built on Electron.",
+  "author": "chemix444",
+  "license": "MIT",
+  "main": "src/main/main.js",
+  "homepage": "https://github.com/chemix444/xcloudwrapper",
+  "scripts": {
+    "start": "electron .",
+    "test": "node --test",
+    "smoke": "node scripts/smoke.js",
+    "icon": "node scripts/generate-icon.js",
+    "pack": "electron-builder --mac --universal --dir",
+    "dist": "electron-builder --mac --universal",
+    "dist:unsigned": "CSC_IDENTITY_AUTO_DISCOVERY=false electron-builder --mac --universal -c.mac.notarize=false"
+  },
+  "dependencies": {
+    "electron-window-state": "^5.0.3"
+  },
+  "devDependencies": {
+    "electron": "^37.2.0",
+    "electron-builder": "^26.0.12",
+    "playwright-core": "^1.61.1"
+  },
+  "build": {
+    "appId": "com.chemix444.xcloudplayer",
+    "productName": "XCloud Player",
+    "copyright": "Copyright © 2026 chemix444. Not affiliated with Microsoft; Xbox is a trademark of Microsoft Corporation.",
+    "asar": true,
+    "files": [
+      "src/**/*",
+      "package.json"
+    ],
+    "directories": {
+      "buildResources": "build",
+      "output": "dist"
+    },
+    "protocols": [
+      {
+        "name": "XCloud Deep Link",
+        "schemes": [
+          "xcloud"
+        ]
+      }
+    ],
+    "mac": {
+      "category": "public.app-category.games",
+      "icon": "build/icon.png",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "universal"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "universal"
+          ]
+        }
+      ],
+      "minimumSystemVersion": "11.0.0",
+      "darkModeSupport": true,
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist",
+      "notarize": true,
+      "extendInfo": {
+        "CFBundleDisplayName": "XCloud Player",
+        "NSMicrophoneUsageDescription": "Microphone access is used for in-game voice chat and Xbox party chat."
+      }
+    },
+    "dmg": {
+      "sign": false
+    }
+  }
+}
